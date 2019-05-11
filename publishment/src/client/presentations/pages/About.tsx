@@ -12,14 +12,19 @@ const LoadableAboutContent = loadable(
     ),
 );
 
-export const About = injectIntl(function(props) {
+interface Props {
+  baseUrl: string;
+  intl: any;
+}
+
+export const About = injectIntl(function(props: Props) {
   const title: string = props.intl.formatMessage({ id: 'About.Title' });
   const description: string = props.intl.formatMessage({
     id: 'About.Description',
   });
 
   return (
-    <Application>
+    <Application baseUrl={props.baseUrl}>
       <Head title={title} description={description} />
       <LoadableAboutContent />
     </Application>

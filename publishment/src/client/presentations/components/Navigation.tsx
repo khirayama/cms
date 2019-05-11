@@ -28,12 +28,16 @@ const LocaleBarWrapper = styled.div`
   bottom: 0;
 `;
 
-export function Navigation() {
+interface Props {
+  baseUrl: string;
+}
+
+export function Navigation(props: Props) {
   return (
     <Wrapper>
       <StyledList>
         <li>
-          <StyledLink to="/">Dashboard</StyledLink>
+          <StyledLink to={`${props.baseUrl}/`}>Dashboard</StyledLink>
         </li>
       </StyledList>
       <LocaleBarWrapper>

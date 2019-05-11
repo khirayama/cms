@@ -12,9 +12,9 @@ interface Props {
 export function Routes(props: Props) {
   return (
     <Switch>
-      <Route exact path={`${props.baseUrl}/`} component={Home} />
-      <Route exact path={`${props.baseUrl}/about`} component={About} />
-      <Route exact path={`${props.baseUrl}/users`} component={Users} />
+      <Route exact path={`${props.baseUrl}/`} render={() => <Home baseUrl={props.baseUrl} />} />
+      <Route exact path={`${props.baseUrl}/about`} render={() => <About baseUrl={props.baseUrl} />} />
+      <Route exact path={`${props.baseUrl}/users`} render={() => <Users baseUrl={props.baseUrl} />} />
     </Switch>
   );
 }

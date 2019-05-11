@@ -7,7 +7,7 @@ import ReactHelmet from 'react-helmet';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import { reducer, State } from '../client/reducers';
+import { reducer, initialState } from '../client/reducers';
 import { Routes } from '../client/presentations/routes/Routes';
 import { ResetStyle } from '../client/presentations/styles/ResetStyle';
 import { GlobalStyle } from '../client/presentations/styles/GlobalStyle';
@@ -31,14 +31,7 @@ const assets = (() => {
 export function get(req: express.Request, res: express.Response) {
   const context = {};
   const baseUrl = req.baseUrl;
-  const initialState: State = {
-    count: 1,
-    ui: {
-      locale: 'en',
-    },
-  };
-
-  const store = createStore(reducer, initialState);
+  const store = createStore(reducer, initialState(baseUrl));
   const preloadedState = store.getState();
   const sheet = new styled.ServerStyleSheet();
   const locale = preloadedState.ui.locale;

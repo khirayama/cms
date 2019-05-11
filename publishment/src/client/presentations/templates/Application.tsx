@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 import { Navigation } from '../../../client/presentations/components/Navigation';
 
-type Props = {
+interface Props {
+  baseUrl: string;
   children: any;
-};
+}
 
 const width = 320;
 
@@ -32,7 +33,7 @@ export function Application(props: Props) {
   return (
     <Wrapper>
       <NavigationWrapper>
-        <Navigation />
+        <Navigation baseUrl={props.baseUrl} />
       </NavigationWrapper>
       <ContentWrapper>{props.children}</ContentWrapper>
     </Wrapper>

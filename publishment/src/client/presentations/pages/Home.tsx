@@ -10,14 +10,19 @@ const Wrapper = styled.default.div`
   color: blue;
 `;
 
-export const Home = injectIntl(function(props) {
+interface Props {
+  baseUrl: string;
+  intl: any;
+}
+
+export const Home = injectIntl(function(props: Props) {
   const title: string = props.intl.formatMessage({ id: 'Home.Title' });
   const description: string = props.intl.formatMessage({
     id: 'Home.Description',
   });
 
   return (
-    <Application>
+    <Application baseUrl={props.baseUrl}>
       <Head title={title} description={description} />
       <Wrapper>
         <h2>Home</h2>

@@ -12,14 +12,19 @@ const LoadableUsersContent = loadable(
     ),
 );
 
-export const Users = injectIntl(function(props) {
+interface Props {
+  baseUrl: string;
+  intl: any;
+}
+
+export const Users = injectIntl(function(props: Props) {
   const title: string = props.intl.formatMessage({ id: 'Users.Title' });
   const description: string = props.intl.formatMessage({
     id: 'Users.Description',
   });
 
   return (
-    <Application>
+    <Application baseUrl={props.baseUrl}>
       <Head title={title} description={description} />
       <LoadableUsersContent />
     </Application>
