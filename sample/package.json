@@ -9,7 +9,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "start": "npm run clean && npm run build:scripts && concurrently 'npm run build:scripts:watch' 'npm run server:dev'",
+    "start": "npm link publishment && npm run clean && npm run build:scripts && concurrently 'npm run build:scripts:watch' 'npm run server:dev'",
     "build": "npm run clean && concurrently 'npm run build:scripts'",
     "build:scripts": "tsc -p tsconfig.prod.json",
     "build:scripts:watch": "tsc -w -p tsconfig.json",
