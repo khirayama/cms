@@ -12,6 +12,10 @@ export const en = {
   'About.Description': 'This is About page!',
   'Users.Title': 'Hi, Users!',
   'Users.Description': 'This is Users page!',
+  'SignUp.Title': 'Sign Up',
+  'SignUp.Description': 'Sign Up',
+  'SignIn.Title': 'Sign In',
+  'SignIn.Description': 'Sign In',
   'Counter.Label': 'Counted by {name}: ',
 };
 
@@ -22,6 +26,10 @@ export const ja = {
   'About.Description': 'ここはアバウトページです',
   'Users.Title': 'やぁ、ユーザーズ',
   'Users.Description': 'ここはユーザーズページです',
+  'SignUp.Title': 'サインアップ',
+  'SignUp.Description': 'サインアップ',
+  'SignIn.Title': 'サインイン',
+  'SignIn.Description': 'サインイン',
   'Counter.Label': '{name}さんのカウント数: ',
 };
 
