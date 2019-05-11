@@ -2,14 +2,14 @@ import * as path from 'path';
 
 import express from 'express';
 
-import { adminStatic, adminRouter } from 'publishment';
+import { adminRouter } from 'publishment';
 
 const app = express();
 
 app.set('views', path.resolve('src', 'views'));
 app.set('view engine', 'pug');
 
-app.use('/admin/public', adminStatic);
+// For publishment
 app.use('/admin', adminRouter);
 
 app.get('/', (req, res) => {

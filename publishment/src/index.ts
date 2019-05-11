@@ -7,4 +7,6 @@ import * as renderer from './server/renderer';
 export const adminStatic = express.static(path.resolve(__dirname, 'public'));
 
 export const adminRouter: express.Router = express.Router();
+
+adminRouter.use('/public', adminStatic);
 adminRouter.get('*', renderer.get);
