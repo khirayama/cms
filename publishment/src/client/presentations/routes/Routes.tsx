@@ -1,24 +1,20 @@
 import * as React from 'react';
-import loadable from '@loadable/component';
 import { Route, Switch } from 'react-router-dom';
 
-// FYI: If you want to do server side rendering, using normal import or install babel with typescript.
-// loadable-components needs a babel plugin to do SSR.
-import { Home } from 'client/presentations/pages/Home';
+import { Home } from '../../../client/presentations/pages/Home';
+import { About } from '../../../client/presentations/pages/About';
+import { Users } from '../../../client/presentations/pages/Users';
 
-const LoadableAbout = loadable(
-  (): any => import(/* webpackChunkName: "about" */ 'client/presentations/pages/About').then(({ About }) => About),
-);
-const LoadableUsers = loadable(
-  (): any => import(/* webpackChunkName: "users" */ 'client/presentations/pages/Users').then(({ Users }) => Users),
-);
+interface Props {
+  baseUrl: string;
+}
 
-export function Routes() {
+export function Routes(props: Props) {
   return (
     <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/about/" component={LoadableAbout} />
-      <Route exact path="/users/" component={LoadableUsers} />
+      <Route exact path={`${props.baseUrl}/`} component={Home} />
+      <Route exact path={`${props.baseUrl}/about`} component={About} />
+      <Route exact path={`${props.baseUrl}/users`} component={Users} />
     </Switch>
   );
 }

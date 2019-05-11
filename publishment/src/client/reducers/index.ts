@@ -5,14 +5,7 @@ export interface State {
   };
 }
 
-export const initialState: State = {
-  count: 1,
-  ui: {
-    locale: 'en',
-  },
-};
-
-export function reducer(state = initialState, action: any) {
+export function reducer(state: any, action: any): State {
   switch (action.type) {
     case 'INCREMENT': {
       return {

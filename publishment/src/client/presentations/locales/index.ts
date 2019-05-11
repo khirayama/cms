@@ -13,9 +13,6 @@ export const en = {
   'Users.Title': 'Hi, Users!',
   'Users.Description': 'This is Users page!',
   'Counter.Label': 'Counted by {name}: ',
-  'Navigation.Dashboard': 'Dashboard',
-  'Navigation.Data': 'Data',
-  'Navigation.Contents': 'Contents',
 };
 
 export const ja = {
@@ -26,9 +23,6 @@ export const ja = {
   'Users.Title': 'やぁ、ユーザーズ',
   'Users.Description': 'ここはユーザーズページです',
   'Counter.Label': '{name}さんのカウント数: ',
-  'Navigation.Dashboard': 'ダッシュボード',
-  'Navigation.Data': 'データ',
-  'Navigation.Contents': 'コンテンツ',
 };
 
 export function chooseLocale(locale: string) {

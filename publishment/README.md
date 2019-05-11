@@ -4,8 +4,8 @@ It is a sample for web application with recent tech stacks. I want to keep makin
 
 ![Screen Shot](./docs/screenshot.gif)
 
-- Home page(`/`) supports full Server Side Rendering.
-- About page(`/about`) and Users page(`/users`) support dynamic(lazy) import.
+- Home page(`/`) supports full Server Side Rendering(SSR).
+- About page(`/about`) and Users page(`/users`) support dynamic(lazy) import. It does SSR for App Shell part but doesn't support SSR with contents area.
 
 ## Stacks
 
@@ -22,7 +22,7 @@ It is a sample for web application with recent tech stacks. I want to keep makin
   - typescript
   - eslint
   - prettier
-- Features
+- App Features
   - Server Side Rendering
   - i18n
   - Code Splitting
@@ -47,20 +47,20 @@ $ npm run server
 
 ## Roadmap
 
-- Make dev evn faster
+- Make dev environment faster
   - Support Hot Module Replacement
-- Optimize code splitting
+- Setting up jest for snapshot tests
 
-## Architecture Hints and Rules
+## Why I do so / Why I don't do so
 
-- About Presentations
-  - Use routes from `presentations/templates`
-    - It is for smooth transition. If you use templates in pages or other layers, you will get blink with dynamic import.
-    - templates is like `AppShell`.
-  - Use head from `presentations/pages`
-  - Not use pages from `containers` and use pages from `routes`
-  - Define async or not in `routes`
-    - That means using `@loadable/components` in routes, not in pages
+Q. *Why don't I use Atomic Design?*  
+A. Actually, it is really difficult to categorize component. If your team still have a solid design system or a team that has only engineers, it is a good sign to use Atomic Design. But if you have to say no, it is a bad sign to do so. Some ideas about design like OOUI have many models like implementation model, meta model, expression model and so on. I can not make sure which component is atoms, which component is molecules, which component is organisms.  
+
+Q. *Why don't I do SSR with dynamic import?*  
+A. `@loadable/component` needs [babel plugin](https://www.smooth-code.com/open-source/loadable-components/docs/server-side-rendering/) to do SSR. If I do it, I need to install and set up babel with typescript. Actually, it got easy. But I think it is too much. If you need to support SSR for SEO, please use babel plugin or stop to use dynamic import for target pages. In addition, multi transpile make optimization difficult like needless codes.  
+
+Q. *Why don't I use `ts-node` for development?*  
+A. It is too slow for development.  
 
 ## Refs
 
@@ -80,5 +80,7 @@ $ npm run server
   - [Server Side Rendering - styled-components: Advanced Usage](https://www.styled-components.com/docs/advanced#server-side-rendering)
 - @loadable/component
   - [Comparison with React.lazy - Loadable Components](https://www.smooth-code.com/open-source/loadable-components/docs/loadable-vs-react-lazy/)
-    - ReactDOM.renderToString doesn't support React.lazy. So, we can not do SSR with React.lazy now. But @loadable/component needs @loadable/babel-plugin. But it doesn't support typescript. If you want to do SSR on server with `@loadable/component` and typescript, you have to use babel with typescript.
-    - Watch React.lazy on server side and loadable/component support typescript.
+    - ReactDOM.renderToString doesn't support React.lazy. So, we can not do SSR with React.lazy now. But @loadable/component needs @loadable/babel-plugin. But it doesn't support typescript. If you want to do SSR on the server with `@loadable/component` and typescript, you have to use babel with typescript.
+    - Watch React.lazy on the server side and loadable/component support typescript.
+- App Shell
+  - [The App Shell Model  |  Web Fundamentals  |  Google Developers](https://developers.google.com/web/fundamentals/architecture/app-shell)

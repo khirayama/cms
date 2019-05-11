@@ -6,21 +6,18 @@ type Props = {
   onJapaneseLocaleClick: () => void;
 };
 
-const Wrapper = styled.ul`
-  background: #ccc;
-
+const StyledList = styled.ul`
   li {
     display: inline-block;
     padding: 8px;
-    font-size: 0.5rem;
   }
 `;
 
 export function LocaleBar(props: Props) {
   return (
-    <Wrapper>
+    <StyledList>
       <li onClick={props.onEnglishLocaleClick}>English</li>
       <li onClick={props.onJapaneseLocaleClick}>日本語</li>
-    </Wrapper>
+    </StyledList>
   );
 }
