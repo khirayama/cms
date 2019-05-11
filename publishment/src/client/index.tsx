@@ -16,18 +16,17 @@ function extractInitialState(): State {
   return JSON.parse(initialDataString);
 }
 
-const store = createStore(reducer, extractInitialState());
+const initialState = extractInitialState();
+const store = createStore(reducer, initialState);
 
 window.addEventListener('DOMContentLoaded', () => {
-  const baseUrl: string = (window as any).config.baseUrl;
-
   ReactDOM.hydrate(
     <BrowserRouter>
       <ResetStyle />
       <GlobalStyle />
       <Provider store={store}>
         <Intl>
-          <Routes baseUrl={baseUrl} />
+          <Routes baseUrl={initialState.config.baseUrl} />
         </Intl>
       </Provider>
     </BrowserRouter>,
