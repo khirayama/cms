@@ -18,8 +18,8 @@ export function Routes(props: Props) {
       <Route exact path={`${props.baseUrl}/signup`} render={() => <SignUp baseUrl={props.baseUrl} />} />
       <Route exact path={`${props.baseUrl}/signin`} render={() => <SignIn baseUrl={props.baseUrl} />} />
       <PrivateRoute
-        baseUrl={props.baseUrl}
         exact
+        baseUrl={props.baseUrl}
         path={`${props.baseUrl}/`}
         render={() => <Home baseUrl={props.baseUrl} />}
       />
