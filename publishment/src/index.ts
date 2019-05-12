@@ -57,12 +57,12 @@ adminRouter.use(lusca.xssProtection(true));
 
 adminRouter.use('/public', adminStatic);
 
+adminRouter.post('/signup', userController.postSignup);
 adminRouter.post('/signin', userController.postSignin);
 adminRouter.get('/signout', userController.signout);
 adminRouter.post('/forgot', userController.postForgot);
 adminRouter.post('/reset/:token', userController.postReset);
 adminRouter.get('/reset/:token', userController.getReset);
-adminRouter.post('/signup', userController.postSignup);
 adminRouter.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 adminRouter.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 adminRouter.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);

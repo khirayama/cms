@@ -8,6 +8,46 @@ import { WriteError } from 'mongodb';
 import { User, UserDocument } from '../models/User';
 import '../config/passport';
 
+export let postSignup = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  req.assert('email', 'Email is not valid').isEmail();
+  req.assert('password', 'Password must be at least 4 characters long').len({ min: 4 });
+  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  // req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
+
+  const errors = req.validationErrors();
+
+  if (errors) {
+    // TODO: flush以外でエラーの通知が必要
+    return res.redirect(`${req.baseUrl}/signup`);
+  }
+
+  const user = new User({
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  User.findOne({ email: req.body.email }, (err, existingUser) => {
+    if (err) {
+      return next(err);
+    }
+    if (existingUser) {
+      return res.redirect(`${req.baseUrl}/signup`);
+    }
+    user.save(err => {
+      if (err) {
+        return next(err);
+      }
+      req.logIn(user, err => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect(req.baseUrl);
+      });
+    });
+  });
+};
+
+
 export let postSignin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
@@ -38,44 +78,6 @@ export let postSignin = (req: express.Request, res: express.Response, next: expr
 export let signout = (req: express.Request, res: express.Response) => {
   req.logout();
   res.redirect(req.baseUrl);
-};
-
-export let postSignup = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password must be at least 4 characters long').len({ min: 4 });
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-  // req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
-
-  const errors = req.validationErrors();
-
-  if (errors) {
-    return res.redirect(`${req.baseUrl}/signup`);
-  }
-
-  const user = new User({
-    email: req.body.email,
-    password: req.body.password,
-  });
-
-  User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) {
-      return next(err);
-    }
-    if (existingUser) {
-      return res.redirect(`${req.baseUrl}/signup`);
-    }
-    user.save(err => {
-      if (err) {
-        return next(err);
-      }
-      req.logIn(user, err => {
-        if (err) {
-          return next(err);
-        }
-        res.redirect(req.baseUrl);
-      });
-    });
-  });
 };
 
 export let postUpdateProfile = (req: express.Request, res: express.Response, next: express.NextFunction) => {
