@@ -55,7 +55,8 @@ export let postSignin = (req: express.Request, res: express.Response, next: expr
   const errors = req.validationErrors();
 
   if (errors) {
-    return res.redirect(`${req.baseUrl}/signin`);
+    res.status(400).json(errors);
+    return;
   }
 
   passport.authenticate('local', (err: Error, user: UserDocument) => {
@@ -63,13 +64,14 @@ export let postSignin = (req: express.Request, res: express.Response, next: expr
       return next(err);
     }
     if (!user) {
-      return res.redirect(`${req.baseUrl}/signin`);
+      res.status(400).json(err);
+      return;
     }
     req.logIn(user, err => {
       if (err || !req.session) {
         return next(err);
       }
-      res.redirect(req.session.returnTo || req.baseUrl);
+      res.redirect(req.baseUrl);
     });
   })(req, res, next);
 };
@@ -86,7 +88,8 @@ export let postUpdateProfile = (req: express.Request, res: express.Response, nex
   const errors = req.validationErrors();
 
   if (errors) {
-    return res.redirect(`${req.baseUrl}/account`);
+    res.status(400).json(errors);
+    return;
   }
 
   User.findById(req.user.id, (err, user: UserDocument) => {
@@ -97,11 +100,12 @@ export let postUpdateProfile = (req: express.Request, res: express.Response, nex
     user.save((err: WriteError) => {
       if (err) {
         if (err.code === 11000) {
-          return res.redirect(`${req.baseUrl}/account`);
+          res.status(400).json(errors);
+          return;
         }
         return next(err);
       }
-      res.redirect(`${req.baseUrl}/account`);
+      res.json(user);
     });
   });
 };
@@ -113,7 +117,8 @@ export let postUpdatePassword = (req: express.Request, res: express.Response, ne
   const errors = req.validationErrors();
 
   if (errors) {
-    return res.redirect(`${req.baseUrl}/account`);
+    res.status(400).json(errors);
+    return;
   }
 
   User.findById(req.user.id, (err, user: UserDocument) => {
