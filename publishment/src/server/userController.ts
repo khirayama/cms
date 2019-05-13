@@ -17,8 +17,8 @@ export let postSignup = (req: express.Request, res: express.Response, next: expr
   const errors = req.validationErrors();
 
   if (errors) {
-    // TODO: flush以外でエラーの通知が必要
-    return res.redirect(`${req.baseUrl}/signup`);
+    res.status(400).json(errors);
+    return;
   }
 
   const user = new User({
