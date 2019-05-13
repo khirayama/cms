@@ -47,7 +47,6 @@ export let postSignup = (req: express.Request, res: express.Response, next: expr
   });
 };
 
-
 export let postSignin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
