@@ -12,7 +12,6 @@ export let postSignup = (req: express.Request, res: express.Response, next: expr
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len({ min: 4 });
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-  // req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
 
   const errors = req.validationErrors();
 
@@ -31,7 +30,8 @@ export let postSignup = (req: express.Request, res: express.Response, next: expr
       return next(err);
     }
     if (existingUser) {
-      return res.redirect(`${req.baseUrl}/signup`);
+      res.status(400).json({} /* Existing user */);
+      return;
     }
     user.save(err => {
       if (err) {
@@ -41,7 +41,8 @@ export let postSignup = (req: express.Request, res: express.Response, next: expr
         if (err) {
           return next(err);
         }
-        res.redirect(req.baseUrl);
+        res.status(200).json({} /* Create user and login */);
+        return;
       });
     });
   });
