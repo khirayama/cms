@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 
 export type UserRequestDocument = mongoose.Document & {
   token: string;
-  isApproved: boolean;
-  roleId: string;
+  roleId: mongoose.Types.ObjectId;
   expiredAt: Date;
 
   isValid: isValidFunction;
@@ -20,12 +19,23 @@ function getOneDayLater() {
 
 const userRequestSchema = new mongoose.Schema(
   {
-    token: { type: String, unique: true, default: 'Generated token' },
-    isApproved: { type: Boolean, default: false },
-    roleId: { type: String },
-    expiredAt: { type: Date, default: getOneDayLater() },
+    token: {
+      type: String,
+      // unique: true,
+      default: 'Generated token',
+    },
+    roleId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Role',
+    },
+    expiredAt: {
+      type: Date,
+      default: getOneDayLater(),
+    },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
 const isValid: isValidFunction = function() {
