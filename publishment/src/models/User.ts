@@ -6,7 +6,7 @@ export type UserDocument = mongoose.Document & {
   password: string;
   passwordResetToken: string;
   passwordResetExpires: Date;
-  roleId: string;
+  roleId: mongoose.Types.ObjectId;
 
   comparePassword: comparePasswordFunction;
 };
@@ -19,13 +19,27 @@ type comparePasswordFunction = (
 
 const userSchema = new mongoose.Schema(
   {
-    email: { type: String, unique: true },
-    password: String,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-    roleId: String,
+    email: {
+      type: String,
+      unique: true,
+    },
+    password: {
+      type: String,
+    },
+    passwordResetToken: {
+      type: String,
+    },
+    passwordResetExpires: {
+      type: Date,
+    },
+    roleId: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Role',
+    },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
 export type AuthToken = {
