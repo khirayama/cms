@@ -1,0 +1,39 @@
+import mongoose from 'mongoose';
+
+export type UserRequestDocument = mongoose.Document & {
+  token: string;
+  isApproved: boolean;
+  roleId: string;
+  expiredAt: Date;
+
+  isValid: isValidFunction;
+};
+
+type isValidFunction = (this: UserRequestDocument) => boolean;
+
+function getOneDayLater() {
+  const now = new Date();
+  now.setDate(now.getDate() + 1);
+
+  return now;
+}
+
+const userRequestSchema = new mongoose.Schema(
+  {
+    token: { type: String, unique: true, default: 'Generated token' },
+    isApproved: { type: Boolean, default: false },
+    roleId: { type: String },
+    expiredAt: { type: Date, default: getOneDayLater() },
+  },
+  { timestamps: true },
+);
+
+const isValid: isValidFunction = function() {
+  const userRequest = this;
+
+  return new Date().getTime() < new Date(userRequest.expiredAt).getTime();
+};
+
+userRequestSchema.methods.isValid = isValid;
+
+export const UserRequest = mongoose.model<UserRequestDocument>('UserRequest', userRequestSchema);
