@@ -8,7 +8,9 @@ const roleSchema = new mongoose.Schema(
   {
     name: String,
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 );
 
 export const Role = mongoose.model<RoleDocument>('Role', roleSchema);
