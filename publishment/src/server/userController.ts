@@ -6,9 +6,11 @@ import express from 'express';
 import { WriteError } from 'mongodb';
 
 import { User, UserDocument } from '../models/User';
+import { Role, RoleDocument } from '../models/Role';
+import { UserRequest, UserRequestDocument } from '../models/UserRequest';
 import '../config/passport';
 
-export let postSignup = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export let postSignup = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password must be at least 4 characters long').len({ min: 4 });
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
@@ -20,32 +22,84 @@ export let postSignup = (req: express.Request, res: express.Response, next: expr
     return;
   }
 
-  const user = new User({
-    email: req.body.email,
-    password: req.body.password,
-  });
+  const token: string = req.body.token || '';
+  const ownerRole: RoleDocument | null = await Role.findOne({ name: 'owner' }).exec();
 
-  User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) {
-      return next(err);
-    }
-    if (existingUser) {
-      res.status(400).json({} /* Existing user */);
-      return;
-    }
-    user.save(err => {
+  if (ownerRole === null) {
+    // eslint-disable-next-line no-console
+    console.log('Please import initial data.');
+    return;
+  }
+
+  const firstUser: UserDocument | null = await User.findOne().exec();
+  if (firstUser === null) {
+    // Create first user
+    const user = await User.create({
+      email: req.body.email,
+      password: req.body.password,
+      roleId: ownerRole.id,
+    });
+    req.logIn(user, err => {
       if (err) {
         return next(err);
       }
-      req.logIn(user, err => {
-        if (err) {
-          return next(err);
-        }
-        res.status(200).json({} /* Create user and login */);
-        return;
-      });
+      res.status(200).json({ id: user.id });
+      return;
     });
-  });
+  } else {
+    if (token) {
+      // Create new user
+      const userRequest: UserRequestDocument | null = await UserRequest.findOne({ token }).exec();
+      if (userRequest && userRequest.isValid()) {
+        const user = await User.create({
+          email: req.body.email,
+          password: req.body.password,
+          roleId: userRequest.roleId,
+        });
+        req.logIn(user, err => {
+          if (err) {
+            return next(err);
+          }
+          res.status(200).json({ id: user.id });
+          return;
+        });
+        res.status(200).json({ ok: 'ok' });
+      } else {
+        res.status(400).json({
+          err: 'Unvalid token',
+        });
+      }
+    } else if (!token) {
+      res.status(400).json({
+        // tmp
+        err: 'Need token',
+      });
+    }
+  }
+
+  // User.findOne({ email: req.body.email }, (err, existingUser) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //
+  //   if (existingUser) {
+  //     res.status(400).json({} /* Existing user */);
+  //     return;
+  //   }
+  //
+  //   user.save(err => {
+  //     if (err) {
+  //       return next(err);
+  //     }
+  //     req.logIn(user, err => {
+  //       if (err) {
+  //         return next(err);
+  //       }
+  //       res.status(200).json({} /* Create user and login */);
+  //       return;
+  //     });
+  //   });
+  // });
 };
 
 export let postSignin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
