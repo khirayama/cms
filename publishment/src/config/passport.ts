@@ -11,9 +11,11 @@ passport.serializeUser<any, any>((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user as any);
-  });
+  User.findById(id)
+    .populate('roleId')
+    .exec((err, user) => {
+      done(err, user as any);
+    });
 });
 
 passport.use(

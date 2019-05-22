@@ -1,12 +1,14 @@
 import bcrypt from 'bcrypt-nodejs';
 import mongoose from 'mongoose';
 
+import { RoleDocument } from './Role';
+
 export type UserDocument = mongoose.Document & {
   email: string;
   password: string;
   passwordResetToken: string;
   passwordResetExpires: Date;
-  roleId: mongoose.Types.ObjectId;
+  role: mongoose.Types.ObjectId | RoleDocument;
 
   comparePassword: comparePasswordFunction;
 };
@@ -32,7 +34,7 @@ const userSchema = new mongoose.Schema(
     passwordResetExpires: {
       type: Date,
     },
-    roleId: {
+    role: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Role',
     },

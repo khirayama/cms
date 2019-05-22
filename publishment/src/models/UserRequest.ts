@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 
+import { RoleDocument } from './Role';
+
 export type UserRequestDocument = mongoose.Document & {
   token: string;
-  roleId: mongoose.Types.ObjectId;
+  role: mongoose.Types.ObjectId | RoleDocument;
   expiredAt: Date;
 
   isValid: isValidFunction;
@@ -24,7 +26,7 @@ const userRequestSchema = new mongoose.Schema(
       // unique: true,
       default: 'Generated token',
     },
-    roleId: {
+    role: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Role',
     },

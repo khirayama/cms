@@ -54,7 +54,7 @@ export let postSignup = async (req: express.Request, res: express.Response, next
         const user = await User.create({
           email: req.body.email,
           password: req.body.password,
-          roleId: userRequest.roleId,
+          role: userRequest.role,
         });
         req.logIn(user, err => {
           if (err) {
