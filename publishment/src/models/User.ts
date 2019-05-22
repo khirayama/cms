@@ -6,6 +6,7 @@ export type UserDocument = mongoose.Document & {
   password: string;
   passwordResetToken: string;
   passwordResetExpires: Date;
+  roleId: string;
 
   comparePassword: comparePasswordFunction;
 };
@@ -22,6 +23,7 @@ const userSchema = new mongoose.Schema(
     password: String,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    roleId: String,
   },
   { timestamps: true },
 );
