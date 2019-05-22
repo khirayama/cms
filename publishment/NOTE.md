@@ -17,9 +17,9 @@
 - User / Role / User Request
 User Request {
   token: string;
-  approved: boolean;
+  isApproved: boolean;
   role: roleId;
-  expired_at: boolean;
+  expiredAt: boolean;
 }
 
 ## Role
