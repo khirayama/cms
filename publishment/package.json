@@ -9,6 +9,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
+    "dev": "npm link && npm start",
     "start": "npm run clean && npm run build:scripts && concurrently 'npm run build:scripts:watch' 'npm run bundle:scripts:watch'",
     "build": "npm run clean && concurrently 'npm run build:scripts' 'NODE_ENV=production npm run bundle:scripts'",
     "build:scripts": "tsc --declaration -p tsconfig.prod.json",
