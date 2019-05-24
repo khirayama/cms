@@ -30,3 +30,7 @@ User Request {
   - コンテンツに関する全ての操作編集が可能
 - Contributor
   - 公開情報への関与以外が可能
+
+```
+mongod --logpath=/data/db/log.txt --dbpath=/data/db --fork
+```
