@@ -25,6 +25,11 @@ export const SignIn = injectIntl(function(props: Props) {
       <Head title={title} description={description} />
       <Wrapper>
         <h2>SignIn</h2>
+        <form>
+          <input type="text" />
+          <input type="password" />
+          <input type="password" />
+        </form>
       </Wrapper>
     </Auth>
   );
