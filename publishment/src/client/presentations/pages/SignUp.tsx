@@ -4,6 +4,7 @@ import { injectIntl } from 'react-intl';
 
 import { Head } from '../../../client/presentations/head/Head';
 import { Auth } from '../../../client/presentations/templates/Auth';
+import { SignUpForm } from '../../../client/presentations/components/SignUpForm';
 
 const Wrapper = styled.default.div`
   color: blue;
@@ -25,6 +26,7 @@ export const SignUp = injectIntl(function(props: Props) {
       <Head title={title} description={description} />
       <Wrapper>
         <h2>SignUp</h2>
+        <SignUpForm />
       </Wrapper>
     </Auth>
   );
