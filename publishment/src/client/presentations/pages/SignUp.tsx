@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 
 import { Head } from '../../../client/presentations/head/Head';
 import { Auth } from '../../../client/presentations/templates/Auth';
-import { SignUpForm } from '../../../client/presentations/components/SignUpForm';
+import { SignUpForm } from '../../../client/containers/SignUpForm';
 
 const Wrapper = styled.default.div`
   color: blue;
