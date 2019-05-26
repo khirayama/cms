@@ -32,3 +32,16 @@ export const changeLocale = (locale: string): ChangeLocale => {
     },
   };
 };
+
+export interface CreateFirstUser extends Action<'CREATE_FIRST_USER'> {}
+
+export const createFirstUser = (email: string, password: string, confirmPassword: string) => {
+  return {
+    type: 'CREATE_FIRST_USER',
+    payload: {
+      email,
+      password,
+      confirmPassword,
+    },
+  };
+};
