@@ -1,3 +1,8 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+import { Editor } from 'Editor';
+
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('ok');
+  ReactDOM.render(<Editor />, window.document.querySelector('#root'));
 });
