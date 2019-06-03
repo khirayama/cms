@@ -1,0 +1,32 @@
+{
+  "name": "formgen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "npm run clean && npm run bundle:scripts:watch",
+    "build": "npm run clean && npm run bundle:scripts",
+    "bundle:scripts": "webpack --mode production",
+    "bundle:scripts:watch": "webpack -w --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "12.0.4",
+    "@types/react": "16.8.19",
+    "@types/react-dom": "16.8.4",
+    "@types/styled-components": "4.1.15",
+    "ts-loader": "6.0.2",
+    "tsconfig-paths-webpack-plugin": "3.2.0",
+    "typescript": "3.5.1",
+    "webpack": "4.32.2",
+    "webpack-cli": "3.3.2"
+  },
+  "dependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "styled-components": "4.2.1"
+  }
+}
