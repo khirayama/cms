@@ -1,98 +1,155 @@
 import * as React from 'react';
 import * as styledComponents from 'styled-components';
 
+import { generatedInput } from 'generatedInput';
+
 interface Props {
 }
 
 interface State {
 }
 
-const Wrapper = styledComponents.default.div`
-  color: blue;
-`;
-
-type input = {
+export type BaseInput = {
   label: string;
   name: string;
 };
 
-type textInput = input & {
+export type TextInput = BaseInput & {
   type: 'text';
   initialValue: string;
 };
 
-type checkboxInput = input & {
+export type CheckboxInput = BaseInput & {
   type: 'checkbox';
   initialValue: boolean;
 };
 
-type textarea = input & {
+export type Textarea = BaseInput & {
   type: 'textarea';
   initialValue: string;
 };
 
-type option = {
-  value: string;
+export type Option = {
+  value: string | number;
   text: string;
 };
 
-type optionFunction = () => option[];
-
-type select = input & {
+export type Select = BaseInput & {
   type: 'select';
-  options: option[] | optionFunction;
+  options: Option[];
 };
 
-type inputType = textInput | checkboxInput | textarea | select;
+export type InputType = TextInput | CheckboxInput | Textarea | Select;
 
-const editorLayout: inputType[][] = [
-  [
-    {
-      label: 'Title',
-      name: 'title',
-      type: 'text',
-      initialValue: 'initial title',
-    },
-    {
-      label: 'Body',
-      name: 'body',
-      type: 'textarea',
-      initialValue: 'sample body',
-    },
-  ]
+export type Column = {
+  size: number;
+  inputs: InputType[];
+};
+
+const editorColumns: Column[] = [
+  {
+    size: 2,
+    inputs: [
+      {
+        label: 'Title',
+        name: 'title',
+        type: 'text',
+        initialValue: 'initial title',
+      },
+      {
+        label: 'Body',
+        name: 'body',
+        type: 'textarea',
+        initialValue: 'sample body',
+      },
+    ],
+  }, {
+    size: 1,
+    inputs: [
+      {
+        label: 'Option',
+        name: 'option',
+        type: 'select',
+        options: [
+          {
+            value: 1,
+            text: 'OK',
+          },
+          {
+            value: 0,
+            text: 'NG',
+          },
+        ],
+      },
+    ],
+  }
 ];
 
-function generatedForm(inputType: inputType): JSX.Element {
-  let inputComponent = null;
+const Form = styledComponents.default.form`
+  display: flex;
+  padding: 0;
+  margin: 0;
+`;
 
-  switch (inputType.type) {
-    case 'text': {
-      inputComponent = <input name={inputType.name} type="text" value={inputType.initialValue} />;
-      break;
-    }
-    case 'textarea': {
-      inputComponent =  <textarea name={inputType.name} value={inputType.initialValue} />;
-      break;
-    }
-  }
-  return (
-    <div key={inputType.name}>
-      <div>
-        <span>{inputType.label}</span>
-      </div>
-      {inputComponent}
-    </div>
-  );
+const Column = styledComponents.default.div`
+  flex: ${(props: { column: Column }) => props.column.size};
+  padding: 12px;
+  margin: 0;
+`;
+
+function columnsToState(columns: Column[]): any {
+  const state: any = {};
+  columns.forEach((column: Column) => {
+    column.inputs.forEach((inputType: InputType) => {
+      switch (inputType.type) {
+        case 'select': {
+          state[inputType.name] = inputType.options[0].value;
+          break;
+        }
+        default: {
+          state[inputType.name] = inputType.initialValue;
+          break;
+        }
+      }
+    });
+  });
+  return state;
 }
 
 export class Editor extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = columnsToState(editorColumns);
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   public render(): JSX.Element {
     return (
-      <>{
-        editorLayout.map((column, index) => {
-          return <div key={`column-${index}`}>{column.map((inputType: inputType) => generatedForm(inputType))}</div>;
+      <Form onSubmit={this.onSubmit}>{
+        editorColumns.map((column: Column, index) => {
+          return (
+            <Column column={column} key={`column-${index}`}>
+              {column.inputs.map((inputType: InputType) => generatedInput(inputType, this.state, this.onChange))}
+            </Column>
+          );
         })
-      }</>
+      }</Form>
     );
+  }
+
+  private onChange(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void {
+    const value = event.currentTarget.value;
+    const name = event.currentTarget.name;
+
+    this.setState({ [name]: value });
+  }
+
+  private onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    console.log(this.state);
   }
 }
