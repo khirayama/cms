@@ -38,27 +38,28 @@ const Select = styledComponents.default.select`
 
 export function generatedInput(inputType: InputType, state: any, onChange: (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void): JSX.Element {
   let inputComponent = null;
+  const name = inputType.name;
 
   switch (inputType.type) {
     case 'text': {
-      inputComponent = <Input name={inputType.name} type="text" value={state[inputType.name]} onChange={onChange} />;
+      inputComponent = <Input name={name} type="text" value={state[name]} onChange={onChange} />;
       break;
     }
     case 'textarea': {
-      inputComponent =  <Textarea name={inputType.name} value={state[inputType.name]} onChange={onChange} />;
+      inputComponent =  <Textarea name={name} value={state[name]} onChange={onChange} />;
       break;
     }
     case 'select': {
       inputComponent =  (
-        <Select onChange={onChange}>
-          {inputType.options.map((option) => <option key={String(option.value)} value={state[inputType.name]}>{option.text}</option>)}
+        <Select onChange={onChange} name={name} value={state[name]}>
+          {inputType.options.map((option) => <option key={String(option.value)} value={option.value}>{option.text}</option>)}
         </Select>
       );
       break;
     }
   }
   return (
-    <div key={inputType.name}>
+    <div key={name}>
       <div>
         <Label>{inputType.label}</Label>
       </div>

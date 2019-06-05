@@ -143,6 +143,7 @@ export class Editor extends React.Component<Props, State> {
   private onChange(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void {
     const value = event.currentTarget.value;
     const name = event.currentTarget.name;
+    console.log(name, value);
 
     this.setState({ [name]: value });
   }
